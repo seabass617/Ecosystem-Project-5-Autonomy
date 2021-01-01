@@ -59,7 +59,7 @@ class TestFish {
     this.velocity.limit(this.topspeed);
     this.location.add(this.velocity);
 
-    this.tail.swim(this.velocity.mag());
+    this.tail.swim(this.velocity.mag()*2);
 
     this.acceleration.mult(0);
 	}
