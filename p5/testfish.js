@@ -45,10 +45,17 @@ class TestFish {
 	flock(school){
     //console.log(school);
     let separation = this.separate(school);
+    let alignment = this.align(school);
+    let cohesion = this.cohere(school);
+
 
     separation.mult(1.5);
+    alignment.mult(.75);
+    cohesion.mult(1.0);
 
     this.applyForce(separation);
+    this.applyForce(alignment);
+    this.applyForce(cohesion);
   }
   
   //===================================================================================
@@ -59,7 +66,7 @@ class TestFish {
     this.velocity.limit(this.topspeed);
     this.location.add(this.velocity);
 
-    this.tail.swim(this.velocity.mag()*2);
+    this.tail.swim(this.velocity.mag());
 
     this.acceleration.mult(0);
 	}
@@ -180,6 +187,68 @@ class TestFish {
     }
 
     return steer;
+  }
+
+  align(school){
+    // only align to fish within a certain range
+    // We get the average velocity of all the fish within that range (different from heading because we want a target not and angle);
+    // We make that direction our target for steering 
+    let neighborhood = 50; //Only align with fish within 100px of you
+    let sum = new p5.Vector(0,0);
+    let count = 0;
+
+    school.forEach(neighbor => {
+      let d = p5.Vector.dist(this.location,neighbor.location);
+      if ((d > 0) && (d < neighborhood)){
+        sum.add(neighbor.velocity);
+        count++
+      }
+    });
+
+    if (count > 0){
+      sum.div(count); // Average
+      sum.normalize();
+      sum.mult(this.topspeed);
+      let steer = p5.Vector.sub(sum,this.velocity);
+      steer.limit(this.maxforce);
+      
+      return steer
+    
+    } else {
+      return new p5.Vector(0,0);
+    }
+
+  }
+
+  cohere(school){
+        // only align to fish within a certain range
+    // We get the average velocity of all the fish within that range (different from heading because we want a target not and angle);
+    // We make that direction our target for steering 
+    let neighborhood = 100; //Only align with fish within 100px of you
+    let sum = new p5.Vector(0,0);
+    let count = 0;
+
+    school.forEach(neighbor => {
+      let d = p5.Vector.dist(this.location,neighbor.location);
+      if ((d > 0) && (d < neighborhood)){
+        sum.add(neighbor.location);
+        count++
+      }
+    });
+
+    if (count > 0){
+      sum.div(count); // Average
+      sum.normalize();
+      sum.mult(this.topspeed);
+      let steer = p5.Vector.sub(sum,this.velocity);
+      steer.limit(this.maxforce);
+      
+      return steer
+    
+    } else {
+      return new p5.Vector(0,0);
+    }
+
   }
 
 }
