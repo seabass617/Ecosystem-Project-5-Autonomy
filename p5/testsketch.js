@@ -5,6 +5,7 @@
 //Declare global variables
 //let minnows = new Array(100);
 let school;
+let shark;
 let clientWidth, clientHeight;
 
 //===================================================================================
@@ -35,7 +36,9 @@ function setup() {
 	background(248,189,127);
 
 	// Creating an instance a shark minnow system
-  school = new School();
+	shark = new TestShark(0,0,0);
+	school = new School();
+	
 }
 
 //===================================================================================
@@ -44,8 +47,9 @@ function setup() {
 function draw() {
 	// Redraw Background Color (Necessary?)
 	background(248,189,127);
-
-	school.run();
+	shark.run();
+	school.run(shark);
+	
 }
 
 

@@ -6,14 +6,14 @@ class School {
   }
 
   populate(){
-    for ( let i = 0; i < 100; i++ ){
+    for ( let i = 0; i < 150; i++ ){
       this.fishes.push(new TestFish(120,180,173));
     }
   }
 
-  run(){
+  run(shark){
     this.fishes.forEach(fish => {
-      fish.run(this.fishes);
+      fish.run(this.fishes, shark);
     })
   }
 

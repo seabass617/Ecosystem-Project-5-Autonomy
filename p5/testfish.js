@@ -4,12 +4,13 @@ class TestFish {
 		this.location = new createVector(random(clientWidth), random(clientHeight));
 		this.velocity = new createVector(0,0);
 		this.acceleration = new createVector(0,0);
-    this.topspeed = 5;
+    this.topspeed = 4;
     this.maxforce = 0.05;
     this.angle = this.velocity.heading();
     this.fishRadius = 10;
     this.tail = new Tail(this.fishRadius);
     this.color = {red:r, green:g, blue: b};
+    this.flocking = false;
 
 
     this.xoff = 0 + random(500);
@@ -21,11 +22,13 @@ class TestFish {
   //===================================================================================
   // Run Function
   //===================================================================================
-  run(school){
+  run(school,shark){
     // Think about scaling the meander, it will dictate how natural schooling appears
     //console.log(school);
-    this.flock(school);
     //this.meander();
+    this.flock(school);
+    this.fear(shark);
+    this.meander();
     this.update();
     this.checkEdges();
     this.display();
@@ -48,10 +51,16 @@ class TestFish {
     let alignment = this.align(school);
     let cohesion = this.cohere(school);
 
+    if ( (separation.mag() + alignment.mag() + cohesion.mag()) === 0 ){
+      this.isflocking = false;
+    } else {
+      this.isflocking = true;
+    }
+
 
     separation.mult(1.5);
-    alignment.mult(.75);
-    cohesion.mult(1.0);
+    alignment.mult(1);
+    cohesion.mult(1);
 
     this.applyForce(separation);
     this.applyForce(alignment);
@@ -102,11 +111,18 @@ class TestFish {
   // Meander Method: Fish will randomly move around the screen 
   //===================================================================================
   meander(){
-    	this.acceleration.x += map(noise(this.xoff),0,1,-3,3);
-      this.acceleration.y += map(noise(this.yoff),0,1,-3,3);
+    if (!this.isflocking){
+    	let x = map(noise(this.xoff),0,1,-3,3);
+      let y = map(noise(this.yoff),0,1,-3,3);
+
+      let meanderforce =  new p5.Vector(x,y);
+      meanderforce.limit(this.maxforce);
+      meanderforce.mult(1.0);
+      this.applyForce(meanderforce);
       // Take the next step through our perlin field
       this.xoff += 0.01;
-			this.yoff += 0.01;
+      this.yoff += 0.01;
+    }
   }
 
   //===================================================================================
@@ -148,6 +164,7 @@ class TestFish {
     desired.normalize();
     desired.mult(this.topspeed);
     let steer = p5.Vector.sub(desired,this.velocity);
+    steer.limit(this.maxforce);
     // Make steer negative if you want to repel
     return steer;
   }
@@ -224,7 +241,7 @@ class TestFish {
         // only align to fish within a certain range
     // We get the average velocity of all the fish within that range (different from heading because we want a target not and angle);
     // We make that direction our target for steering 
-    let neighborhood = 100; //Only align with fish within 100px of you
+    let neighborhood = 50; //Only go towards the center of fish 50px radius
     let sum = new p5.Vector(0,0);
     let count = 0;
 
@@ -238,16 +255,43 @@ class TestFish {
 
     if (count > 0){
       sum.div(count); // Average
-      sum.normalize();
-      sum.mult(this.topspeed);
-      let steer = p5.Vector.sub(sum,this.velocity);
-      steer.limit(this.maxforce);
-      
-      return steer
-    
+      return this.seek(sum);
     } else {
       return new p5.Vector(0,0);
     }
+
+  }
+
+  // If there is a shark near swim away! Takes a shark parameter, which means 
+  // the run function will also have to pass a shark. 
+  fear(shark){
+    let feardistance = 100; 
+    let d = p5.Vector.dist(this.location, shark.location);
+    // If we are withing scare range
+    if ((d > 0) && (d < feardistance)){
+      this.changeColor(255,255,255);
+      // Get a vector pointing in the opposite direction of shark
+      let steer = p5.Vector.sub(this.location, shark.location);
+      steer.normalize(); // might be issues around here due to where i'm normalizing
+      steer.div(d*d); // Weight it by the distance so that the l
+      //Reynolds steering theory
+      steer.normalize();
+      steer.mult(7); // should be topspeed here but topspeed is too slow, maybe I should make an idle and topspeed???
+      steer.sub(this.velocity);
+      steer.limit(this.maxforce);
+
+      steer.mult(10.0); // area to scale
+      this.applyForce(steer); //apply to the fishy
+
+    } else {
+      this.changeColor(120,180,173);
+    }
+    // If it is too close
+    // then steer (separate from) the shark
+    // otherwise return an empty vector
+    // Allow the ability to scale
+    // Apply that force 
+    // (There may be some good spac here to remove unecessary PVectors)
 
   }
 
