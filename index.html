@@ -12,6 +12,7 @@
   </style>
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+  <script src="p5/dom.js"></script>
   <script src="p5/tail.js"></script>
   <!-- <script src="p5/fish.js"></script> -->
   <!-- <script src="p5/minnow.js"></script>  -->
@@ -28,7 +29,29 @@
 </head>
 
 <body>
-  <div id="window"></div>
+  <div id="window">
+    <div id="container">
+      <div id="show-button" onclick="show()"> What's going on here?</div>
+      <div id="info-block">
+        <p style = "margin-top: 0px;"> The schooling behavior you see is based off 
+          of Craig Reynolds' model. The three sliders you
+          see represent the different behavioral abilities of
+          each fish in a school. The separation slider controls
+          the distance that the fish will want to keep from one another.
+          The alignment slider controls how much the fish will want to 
+          swim in the same direction. The cohesion slider controls how
+          much a fish wants to stay close to the school.
+        </p>
+        <p>When a fish flashes white, it means that it's scared. The scare slider
+          controls how comfortable the fish feel around a shark.
+        </p>
+        <p>Play around witht these sliders and see what types of school 
+          behaviors you can create!
+        </p>
+        <div id="hide-button" onclick="hide()">hide</div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

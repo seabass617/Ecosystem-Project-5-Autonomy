@@ -14,3 +14,54 @@
     overflow: hidden;
     position: relative;
   }
+
+  #container { 
+    position: relative;
+    top: 300px;
+    left: 25px;
+    width: 300px;
+    /* background: rgba(0,0,0,0.6); */
+  }
+
+  #show-button{
+    background: rgba(0,0,0,0.3);
+    color: rgba(255,255,255,0.3);
+    width: 100px; 
+    height: 50px;
+    text-align: center;
+    padding-top: 7px;
+    border-radius: 3px;
+    transition: 0.1s ease-in-out;
+    transition-property: background-color, color;
+
+  }
+
+  #show-button:hover {
+    background: rgba(0,0,0,0.6);
+    color: rgba(255,255,255,1);
+    cursor: pointer;
+  }
+  #info-block{
+    display: none;
+    color: rgba(255,255,255,1);
+    height: auto;
+    width: 300px;
+    background: rgba(0,0,0,0.6);
+    padding: 10px;
+    padding-top: 10px;
+    border-radius: 3px;
+  }
+
+  #hide-button {
+    margin-top: 30px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  #hide-button:hover {
+    margin-top: 30px;
+    color: rgba(255,255,255,1);
+    cursor: pointer;
+  }
+
+
+

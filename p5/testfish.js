@@ -58,9 +58,9 @@ class TestFish {
     }
 
 
-    separation.mult(1.5);
-    alignment.mult(1);
-    cohesion.mult(1);
+    separation.mult(3.5);
+    alignment.mult(alignmentSlider.value());
+    cohesion.mult(cohesionSlider.value());
 
     this.applyForce(separation);
     this.applyForce(alignment);
@@ -174,7 +174,7 @@ class TestFish {
   // Separate Method: Calculates and returns a separation force 
   //===================================================================================
   separate(school) {
-    let desiredsepartion = 35;
+    let desiredsepartion = separationSlider.value();
     let steer = new p5.Vector(0,0);
     let count = 0; 
     //console.log(school);
@@ -241,7 +241,7 @@ class TestFish {
         // only align to fish within a certain range
     // We get the average velocity of all the fish within that range (different from heading because we want a target not and angle);
     // We make that direction our target for steering 
-    let neighborhood = 50; //Only go towards the center of fish 50px radius
+    let neighborhood = 100; //Only go towards the center of fish 50px radius
     let sum = new p5.Vector(0,0);
     let count = 0;
 
