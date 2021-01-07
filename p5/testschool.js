@@ -6,7 +6,7 @@ class School {
   }
 
   populate(){
-    for ( let i = 0; i < 150; i++ ){
+    for ( let i = 0; i < 250; i++ ){
       this.fishes.push(new TestFish(120,180,173));
     }
   }

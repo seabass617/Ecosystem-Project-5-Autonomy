@@ -2,7 +2,7 @@ class Tail {
   constructor(fishRadius){
     this.theta = 0;
     this.fishRadius = fishRadius;
-    this.period = 60;
+    this.period = 10;
 
     // Set initial location of the tail 
     this.tx1 = -this.fishRadius * cos(this.theta);
@@ -19,12 +19,12 @@ class Tail {
   //===================================================================================
   swim(fishVelocity) { 
     
-    // If the fish isn't moving, make the tail idle at 60
-    if (fishVelocity != 0){
-     this.period = 40/fishVelocity;
-    } else {
-       this.period = 60;
-    }
+    // // Code for moving the tail relative to the velocity
+    // if (fishVelocity != 0){
+    //  this.period = 40/fishVelocity;// divide by velocity to have it related to this velocity
+    // } else {
+    //    this.period = 60;
+    // }
 
     this.theta = PI/8 * cos(2*PI * (frameCount/this.period));
 

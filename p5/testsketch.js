@@ -7,7 +7,8 @@
 let school;
 let shark;
 let clientWidth, clientHeight;
-let separationSlider, alignmentSlider, cohesionSlider; 
+let separationSlider, alignmentSlider, cohesionSlider, distanceSlider,
+skittishSlider; 
 
 //===================================================================================
 // Responsiveness
@@ -36,17 +37,25 @@ function setup() {
 	// Background Color
 	background(248,189,127);
 
+		//Creating Sliders
+		separationSlider = createSlider(0,10,6,0.1);
+		separationSlider.position(20,50);
+		alignmentSlider = createSlider(0,10,5,0.1);
+		alignmentSlider.position(20,100);
+		cohesionSlider = createSlider(0,4,1,0.1);
+		cohesionSlider.position(20,150);
+		distanceSlider = createSlider(20,200,50,5);
+		distanceSlider.position(20,200);
+		skittishSlider = createSlider(100,300,150,5);
+		skittishSlider.position(20,250);
+
+
 	// Creating an instance a shark minnow system
 	shark = new TestShark(0,0,0);
 	school = new School();
+	//shark.setSchool(school);
 
-	//Creating Sliders
-	separationSlider = createSlider(20,70,35,5);
-	separationSlider.position(20,50);
-	alignmentSlider = createSlider(0,4,1,0.1);
-	alignmentSlider.position(20,125);
-	cohesionSlider = createSlider(0,4,1,0.1);
-	cohesionSlider.position(20,200);
+
 
 	
 }
@@ -57,8 +66,9 @@ function setup() {
 function draw() {
 	// Redraw Background Color (Necessary?)
 	background(248,189,127);
-	shark.run(school);
 	school.run(shark);
+	shark.run(school);
+
 
 		// Text for slider	
 		fill(255);
@@ -66,12 +76,19 @@ function draw() {
 		text('Separation', 35, 90);
 		fill(255);
 		textSize(16);
-		text('Alignment', 35, 165);
+		text('Alignment', 35, 140);
 		fill(255);
 		fill(255);
 		textSize(16);
-		text('Cohesion', 35, 240);
+		text('Cohesion', 35, 190);
 		fill(255);	
+		textSize(16);
+		text('Neighborhood', 35, 240);
+		fill(255);	
+		textSize(16);
+		text('Skittishness', 35, 290);
+		fill(255);
+
 }
 
 

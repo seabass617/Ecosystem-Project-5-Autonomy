@@ -11,6 +11,7 @@ class TestFish {
     this.tail = new Tail(this.fishRadius);
     this.color = {red:r, green:g, blue: b};
     this.flocking = false;
+    this.distance = distanceSlider.value();
 
 
     this.xoff = 0 + random(500);
@@ -58,7 +59,7 @@ class TestFish {
     }
 
 
-    separation.mult(3.5);
+    separation.mult(separationSlider.value());
     alignment.mult(alignmentSlider.value());
     cohesion.mult(cohesionSlider.value());
 
@@ -78,6 +79,8 @@ class TestFish {
     this.tail.swim(this.velocity.mag());
 
     this.acceleration.mult(0);
+
+    //console.log(this.velocity.mag());
 	}
 
 
@@ -174,7 +177,7 @@ class TestFish {
   // Separate Method: Calculates and returns a separation force 
   //===================================================================================
   separate(school) {
-    let desiredsepartion = separationSlider.value();
+    let desiredsepartion = 35;
     let steer = new p5.Vector(0,0);
     let count = 0; 
     //console.log(school);
@@ -210,7 +213,7 @@ class TestFish {
     // only align to fish within a certain range
     // We get the average velocity of all the fish within that range (different from heading because we want a target not and angle);
     // We make that direction our target for steering 
-    let neighborhood = 50; //Only align with fish within 100px of you
+    let neighborhood = distanceSlider.value(); //Only align with fish within 100px of you
     let sum = new p5.Vector(0,0);
     let count = 0;
 
@@ -241,7 +244,7 @@ class TestFish {
         // only align to fish within a certain range
     // We get the average velocity of all the fish within that range (different from heading because we want a target not and angle);
     // We make that direction our target for steering 
-    let neighborhood = 100; //Only go towards the center of fish 50px radius
+    let neighborhood = distanceSlider.value(); //Only go towards the center of fish 50px radius
     let sum = new p5.Vector(0,0);
     let count = 0;
 
@@ -265,7 +268,7 @@ class TestFish {
   // If there is a shark near swim away! Takes a shark parameter, which means 
   // the run function will also have to pass a shark. 
   fear(shark){
-    let feardistance = 100; 
+    let feardistance = skittishSlider.value(); 
     let d = p5.Vector.dist(this.location, shark.location);
     // If we are withing scare range
     if ((d > 0) && (d < feardistance)){

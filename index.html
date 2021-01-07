@@ -14,6 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
   <script src="p5/dom.js"></script>
   <script src="p5/tail.js"></script>
+  <script src="p5/sharktail.js"></script>
   <!-- <script src="p5/fish.js"></script> -->
   <!-- <script src="p5/minnow.js"></script>  -->
   <script src="p5/testfish.js"></script> 
@@ -34,19 +35,21 @@
       <div id="show-button" onclick="show()"> What's going on here?</div>
       <div id="info-block">
         <p style = "margin-top: 0px;"> The schooling behavior you see is based off 
-          of Craig Reynolds' model. The three sliders you
-          see represent the different behavioral abilities of
-          each fish in a school. The separation slider controls
-          the distance that the fish will want to keep from one another.
-          The alignment slider controls how much the fish will want to 
-          swim in the same direction. The cohesion slider controls how
-          much a fish wants to stay close to the school.
+          of Craig Reynolds' boid flocking model. In his model, each creature has
+          three behaviors, separation (don't bump into your neighbors), alignment (go in the same direction
+          as your neighbors), and cohesion (stay with your neighbors). The three sliders you
+          see control the magnitude of these forces. The "neighborhood" slider controls how large of a neighborhood
+          each fish has. So if your neighborhood is small it means you are only going to align and cohere to
+          other fish that are only really close to you. While if the neighborhood is large, you will also align and cohere with
+          fish that are farther away. 
         </p>
-        <p>When a fish flashes white, it means that it's scared. The scare slider
+        <p>When a fish flashes white, it means that it's scared. The skittishness slider
           controls how comfortable the fish feel around a shark.
         </p>
-        <p>Play around witht these sliders and see what types of school 
+        <p>Play around with these sliders and see what types of school 
           behaviors you can create!
+        </p>
+        <p> Resources Used: "The Nature of Code" by Dan Shiffman 
         </p>
         <div id="hide-button" onclick="hide()">hide</div>
       </div>
