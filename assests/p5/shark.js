@@ -1,4 +1,9 @@
-class TestShark extends TestFish {
+//===================================================================================
+// Shark Class: 
+// A shark is a fish that is bigger and can hunt fish (eventually)
+//===================================================================================
+
+class Shark extends Fish {
   constructor(r,g,b){
     super(r,g,b);
     this.topspeed = 3;
@@ -44,9 +49,9 @@ class TestShark extends TestFish {
     this.acceleration.mult(0);
   }
 
-  // the shark should have a hunting method which basically steers it towards the 
-  // closest fish within it's radius. Test fear method first 
+
   meander(){
+    // If a shark isn't hunting then just meander
     if (!this.isHunting){
     	let x = map(noise(this.xoff),0,1,-3,3);
       let y = map(noise(this.yoff),0,1,-3,3);
@@ -61,12 +66,13 @@ class TestShark extends TestFish {
     }
   }
 
-  // Initializes a school within this shark object so that it can be used in hunt 
 
-
+  //===================================================================================
+  // Hunting Method: In testing
+  //===================================================================================
   hunt(school){
     let range = 300;
-    //potentially area to not create a fuck ton more pvectors every time
+    //potential area to not create a fuck ton more pvectors every time
     school.fishes.forEach(fish => {
       let d = p5.Vector.dist(this.location, fish.location);
       if ((d > 0) && (d < range)){
@@ -78,7 +84,10 @@ class TestShark extends TestFish {
         this.isHunting = false;
       }
     });
-
+    // Sudo Code:
+    // Look around to see if you find a fish within a certain range of you
+    // If you find one, steer towards it's location until it is out of range
+    // Once out of range, go back to meandering and seeing if there is a fish within range
   }
 
 }

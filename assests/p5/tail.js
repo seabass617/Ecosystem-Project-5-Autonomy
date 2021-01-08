@@ -1,4 +1,12 @@
+//===================================================================================
+// Tail Class: 
+// Creates a tail for a fish. Uses polar coordinates to calculate 
+// where to draw the tail relative to the fish. Oscillates back and forth based on
+// a period defined in the constructor.
+//===================================================================================
+
 class Tail {
+  
   constructor(fishRadius){
     this.theta = 0;
     this.fishRadius = fishRadius;

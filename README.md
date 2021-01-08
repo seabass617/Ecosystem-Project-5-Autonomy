@@ -2,7 +2,6 @@
 
 Fifth project as I make my way through "The Nature of Code". This project is a huge milestone in that we are now modeling behaviors through a vehicle's desire. A fish is actually getting scared and feels the desire to turn away from the shark vs. the shark detecting whether or not a fish is within it's radius and imparting a force to it. In the real world, does a shark make a fish swim away via some form of emotional telepathic manipulation? Or is it that the fish is afraid of a shark and wants to swim away? I think the latter is more accurate.
 
-This code was optimized by reducing the amount of vector objects created and by using a cos/sine lookup tables instead of calculating tail location & movement. 
 
 How could this project be improved?
 - Hunting Behavior for Shark:
@@ -20,5 +19,8 @@ The controls could all be help within one "controls" button/container that drops
 
 - Population Control: 
 Allow the user to increase or decrease the size of the population! 
+
+- Big O!
+Reduce the amount of PVectors being created. Implement Bin Lattice Spatial Subdivision!
 
 

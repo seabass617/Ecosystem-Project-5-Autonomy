@@ -1,4 +1,10 @@
-class TestFish {
+//===================================================================================
+// Fish Class: 
+// Creates a fish, behavior are executed in the run function. 
+// Magnitude of flocking forces are adjusted in the flocking function. 
+//===================================================================================
+
+class Fish {
   	
 	constructor(r,g,b){
 		this.location = new createVector(random(clientWidth), random(clientHeight));
@@ -13,7 +19,7 @@ class TestFish {
     this.flocking = false;
     this.distance = distanceSlider.value();
 
-
+    // Used for perlin steps on meander
     this.xoff = 0 + random(500);
     this.yoff = 1000 + random(500);
   }
@@ -23,10 +29,8 @@ class TestFish {
   //===================================================================================
   // Run Function
   //===================================================================================
+
   run(school,shark){
-    // Think about scaling the meander, it will dictate how natural schooling appears
-    //console.log(school);
-    //this.meander();
     this.flock(school);
     this.fear(shark);
     this.meander();
@@ -38,26 +42,27 @@ class TestFish {
   //===================================================================================
   // ApplyForce Method: Applies a force to the fish 
   //===================================================================================
+
   applyForce(force) {
     // let f = p5.Vector.div(force, this.mass); // You can manipulate with mass here
     this.acceleration.add(force);
   }
 
   //===================================================================================
-  // flock Function: Run all flocking behaviors here
+  // Flock Function: Run all flocking behaviors here
   //===================================================================================
+
 	flock(school){
-    //console.log(school);
     let separation = this.separate(school);
     let alignment = this.align(school);
     let cohesion = this.cohere(school);
 
+    // If the magnitude of all the flocking forces is zero then you are not flocking!
     if ( (separation.mag() + alignment.mag() + cohesion.mag()) === 0 ){
       this.isflocking = false;
     } else {
       this.isflocking = true;
     }
-
 
     separation.mult(separationSlider.value());
     alignment.mult(alignmentSlider.value());
@@ -69,8 +74,9 @@ class TestFish {
   }
   
   //===================================================================================
-  // Update Function: Run all flocking behaviors here
+  // Update Function: Update velocity, and location, make the tail swim too
   //===================================================================================
+
 	update(){
     this.velocity.add(this.acceleration);
     this.velocity.limit(this.topspeed);
@@ -79,8 +85,6 @@ class TestFish {
     this.tail.swim(this.velocity.mag());
 
     this.acceleration.mult(0);
-
-    //console.log(this.velocity.mag());
 	}
 
 
@@ -88,6 +92,7 @@ class TestFish {
   //===================================================================================
   // Display Function: Used to display different components of the fish
   //===================================================================================
+
   display(){
     // Don't add a heading unless it exists
     if (this.velocity.heading() != 0) {
@@ -106,13 +111,11 @@ class TestFish {
     pop();
   }
 
-  
-
-
 
   //===================================================================================
   // Meander Method: Fish will randomly move around the screen 
   //===================================================================================
+
   meander(){
     if (!this.isflocking){
     	let x = map(noise(this.xoff),0,1,-3,3);
@@ -122,6 +125,7 @@ class TestFish {
       meanderforce.limit(this.maxforce);
       meanderforce.mult(1.0);
       this.applyForce(meanderforce);
+
       // Take the next step through our perlin field
       this.xoff += 0.01;
       this.yoff += 0.01;
@@ -131,6 +135,7 @@ class TestFish {
   //===================================================================================
   // Change Color Method: Change the color of the fish 
   //===================================================================================
+
   changeColor(r,g,b){
     this.color.red = r;
     this.color.green = g;
@@ -141,6 +146,7 @@ class TestFish {
   //===================================================================================
   // CheckEdges Method: Allows for the fish to wrap around edges of the viewport
   //===================================================================================
+
 	checkEdges(){
 		if (this.location.x > clientWidth) {
       this.location.x = 0;
@@ -162,25 +168,27 @@ class TestFish {
   //===================================================================================
   // Steer Method: Calculates and returns a steering for to a desired location
   //===================================================================================
+
   seek(target) {
     let desired = p5.Vector.sub(target,this.location);
     desired.normalize();
     desired.mult(this.topspeed);
     let steer = p5.Vector.sub(desired,this.velocity);
     steer.limit(this.maxforce);
-    // Make steer negative if you want to repel
     return steer;
   }
 
-  // THINK ABOUT HOW THIS WILL BE DIFFERENT FOR SHARKS AND MINNOWS
+
   //===================================================================================
   // Separate Method: Calculates and returns a separation force 
   //===================================================================================
+
   separate(school) {
     let desiredsepartion = 35;
     let steer = new p5.Vector(0,0);
     let count = 0; 
-    //console.log(school);
+    
+    // Find the neighbors in your range
     school.forEach(fish => {
       let d = p5.Vector.dist(this.location, fish.location);
       if ((d > 0) && (d < desiredsepartion)){
@@ -209,11 +217,14 @@ class TestFish {
     return steer;
   }
 
+  
+  //===================================================================================
+  // Alignment Method: Calculates and returns an alignment force with neighbors
+  //===================================================================================
+
   align(school){
-    // only align to fish within a certain range
-    // We get the average velocity of all the fish within that range (different from heading because we want a target not and angle);
-    // We make that direction our target for steering 
-    let neighborhood = distanceSlider.value(); //Only align with fish within 100px of you
+
+    let neighborhood = distanceSlider.value(); 
     let sum = new p5.Vector(0,0);
     let count = 0;
 
@@ -240,11 +251,14 @@ class TestFish {
 
   }
 
+  
+  //===================================================================================
+  // Cohesion Method: Calculates and returns a cohesion force so that you stick with the group
+  //===================================================================================
+
   cohere(school){
-        // only align to fish within a certain range
-    // We get the average velocity of all the fish within that range (different from heading because we want a target not and angle);
-    // We make that direction our target for steering 
-    let neighborhood = distanceSlider.value(); //Only go towards the center of fish 50px radius
+
+    let neighborhood = distanceSlider.value(); 
     let sum = new p5.Vector(0,0);
     let count = 0;
 
@@ -265,21 +279,26 @@ class TestFish {
 
   }
 
-  // If there is a shark near swim away! Takes a shark parameter, which means 
-  // the run function will also have to pass a shark. 
+  //===================================================================================
+  // Fear of Shark Method: If there is a shark nearby, run away!
+  //===================================================================================
   fear(shark){
+    
     let feardistance = skittishSlider.value(); 
     let d = p5.Vector.dist(this.location, shark.location);
+    
     // If we are withing scare range
     if ((d > 0) && (d < feardistance)){
       this.changeColor(255,255,255);
+      
       // Get a vector pointing in the opposite direction of shark
       let steer = p5.Vector.sub(this.location, shark.location);
-      steer.normalize(); // might be issues around here due to where i'm normalizing
-      steer.div(d*d); // Weight it by the distance so that the l
+      steer.normalize();
+      steer.div(d*d); // Weight it by the distance^2
+      
       //Reynolds steering theory
       steer.normalize();
-      steer.mult(7); // should be topspeed here but topspeed is too slow, maybe I should make an idle and topspeed???
+      steer.mult(7); // Weight it some more
       steer.sub(this.velocity);
       steer.limit(this.maxforce);
 
@@ -289,12 +308,6 @@ class TestFish {
     } else {
       this.changeColor(120,180,173);
     }
-    // If it is too close
-    // then steer (separate from) the shark
-    // otherwise return an empty vector
-    // Allow the ability to scale
-    // Apply that force 
-    // (There may be some good spac here to remove unecessary PVectors)
 
   }
 

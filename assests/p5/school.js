@@ -1,3 +1,8 @@
+//===================================================================================
+// School Class: 
+// Manages populating a school of fish
+// Also runs each fish 
+//===================================================================================
 class School {
 
   constructor(){
@@ -7,7 +12,7 @@ class School {
 
   populate(){
     for ( let i = 0; i < 250; i++ ){
-      this.fishes.push(new TestFish(120,180,173));
+      this.fishes.push(new Fish(120,180,173));
     }
   }
 
