@@ -25,6 +25,7 @@ function windowResized() {
 //===================================================================================
 function setup() {
 	
+	//pixelDensity(3);
 	// Window Detection
 	clientHeight = document.getElementById('window').clientHeight;
 	clientWidth = document.getElementById('window').clientWidth;
@@ -54,10 +55,6 @@ function setup() {
 	shark = new TestShark(0,0,0);
 	school = new School();
 	//shark.setSchool(school);
-
-
-
-	
 }
 
 //===================================================================================
@@ -72,21 +69,20 @@ function draw() {
 
 		// Text for slider	
 		fill(255);
-		textSize(16);
-		text('Separation', 35, 90);
+		textSize(18);
+		text('Separation', 35, 40);
 		fill(255);
-		textSize(16);
-		text('Alignment', 35, 140);
+		textSize(18);
+		text('Alignment', 35, 90);
 		fill(255);
-		fill(255);
-		textSize(16);
-		text('Cohesion', 35, 190);
+		textSize(18);
+		text('Cohesion', 35, 140);
 		fill(255);	
-		textSize(16);
-		text('Neighborhood', 35, 240);
+		textSize(18);
+		text('Neighborhood', 35, 190);
 		fill(255);	
-		textSize(16);
-		text('Skittishness', 35, 290);
+		textSize(18);
+		text('Skittishness', 35, 240);
 		fill(255);
 
 }
